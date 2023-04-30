@@ -3,29 +3,6 @@
 
 using namespace std;
 
-void Check(int &A, int &B)
-{
-	
-	bool again = true;
-
-	while (again)
-	{
-		if (B == 1)
-			break;
-		for (int i = 2; i <= B; i++)
-		{
-			if(A % i == 0 && B % i == 0)
-			{
-				A /= i;
-				B /= i;
-				again = true;
-				break;
-			}
-			again = false;
-		}
-	}
-	
-}
 
 int main()
 {
@@ -44,7 +21,10 @@ int main()
 
 	int num = A1 + A2;
 
-	Check(num, den);
+	int divi = gcd(num, den);
+
+	num /= divi;
+	den /= divi;
 
 	cout << num << " " << den;
 
