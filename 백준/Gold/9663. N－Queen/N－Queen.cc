@@ -2,63 +2,92 @@
 
 using namespace std;
 
-int result = 0;
+bool visited[16][16];
+bool row[16];
 
-int board[15][15] = {0,};
-int arry[15] = {0,};
-int dirx[2] = {-1, -1};
-int diry[2] = {-1, 1};
+int N, ans;
 
-bool check(int x, int y, int N)
+int dirx[2] = { -1, -1 };
+int diry[2] = { -1, 1 };
+
+bool CheckDiagonalWays(int x, int y)
 {
-	for(int i = 0; i <2; i++)  
+	int lftx = x + dirx[0];
+	int lfty = y + diry[0];
+
+	int rgtx = x + dirx[1];
+	int rgty = y + diry[1];
+	
+	while(lftx > -1 && lftx < N && lfty > -1 && lfty < N)
 	{
-		int tempx = x;
-		int tempy = y;
-		while(tempx + dirx[i] > -1 && tempx + dirx[i] < N && tempy + diry[i] > -1 && tempy + diry[i] < N)
-		{
-			tempx += dirx[i];
-			tempy += diry[i];
-			if (board[tempx][tempy] == 1)
-				return true;
-		}
+		if (visited[lftx][lfty] == true)
+			return false;
+
+		lftx += dirx[0];
+		lfty += diry[0];
 	}
-	return false;
+
+	while (rgtx > -1 && rgtx < N && rgty > -1 && rgty < N)
+	{
+		if (visited[rgtx][rgty] == true)
+			return false;
+
+		rgtx += dirx[1];
+		rgty += diry[1];
+	}
+
+	return true;
 }
 
-void findQueen(int x, int N)
+void dfs(int x, int y)
 {
-	if (x == N)
+	if(x == N-1)
 	{
-		result++;
+		ans++;
 		return;
 	}
 
+	x++;
+
 	for(int i = 0; i < N; i++)
 	{
-		if (arry[i] == 1)
+		if (row[i] == true)
 			continue;
-		if(!check(x,i, N))
+
+		if(CheckDiagonalWays(x, i))
 		{
-			board[x][i] = 1;
-			arry[i] = 1;
-			findQueen(x+1, N);
-			arry[i] = 0;
-			board[x][i] = 0;
+			row[i] = true;
+			visited[x][i] = true;
+			dfs(x, i);
+			visited[x][i] = false;
+			row[i] = false;
 		}
 	}
-	return;
 }
 
+void NQueen()
+{
+	for(int i = 0; i < N; i++)
+	{
+		row[i] = true;
+		visited[0][i] = true;
+		dfs(0, i);
+		visited[0][i] = false;
+		row[i] = false;
+	}
+
+	cout << ans;
+}
 
 int main()
 {
-	int N;
+	ios_base::sync_with_stdio(0);
+	cin.tie(0);
+	cout.tie(0);
 
 	cin >> N;
-	findQueen(0, N);
 
-	cout << result;
+	NQueen();
 
 	return 0;
 }
