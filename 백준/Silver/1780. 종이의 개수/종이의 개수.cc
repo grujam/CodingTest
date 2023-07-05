@@ -6,11 +6,6 @@ using namespace std;
 
 int arr[3];
 
-enum
-{
-	MINUS = -1, ZERO, ONE
-};
-
 bool Check(int x, int y, int N, vector<vector<int>>& v)
 {
 	int tmp = v[x][y];
@@ -24,20 +19,7 @@ bool Check(int x, int y, int N, vector<vector<int>>& v)
 		}
 	}
 
-	switch(tmp)
-	{
-	case MINUS:
-		arr[MINUS + 1]++;
-		break;
-
-	case ZERO:
-		arr[ZERO + 1]++;
-		break;
-
-	case ONE:
-		arr[ONE + 1]++;
-		break;
-	}
+	arr[tmp+1]++;
 
 	return true;
 }
