@@ -22,19 +22,19 @@ int main()
 
 	K = min((long long)1000000000, K);
 
-	long long low = 1, high = N*N;
+	long long low = 0, high = N*N;
 
-	while(low <= high)
+	while(low +1 < high)
 	{
 		long long mid = (low + high) / 2;
 
-		if (Count(mid, N) >= K)
-			high = mid - 1;
+		if (Count(mid, N) < K)
+			low = mid;
 		else
-			low = mid + 1;
+			high = mid;
 	}
 
-	cout << low;
+	cout << high;
 
 	return 0;
 }
