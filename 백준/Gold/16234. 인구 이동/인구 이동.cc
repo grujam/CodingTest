@@ -13,15 +13,13 @@ int N, L, R;
 int dirx[4] = { 0,1,0,-1 };
 int diry[4] = { 1,0,-1,0 };
 
-bool BFS(int x, int y, vector<vector<int>>& v)
+int BFS(int x, int y, vector<vector<int>>& v, vector<PII>& countries)
 {
 	queue<PII> q;
-	queue<PII> countries;
 	int total = 0;
-	bool check = false;
 
 	q.push(PII(x, y));
-	countries.push(PII(x, y));
+	countries.emplace_back(x, y);
 	total += v[x][y];
 
 	while(!q.empty())
@@ -42,25 +40,15 @@ bool BFS(int x, int y, vector<vector<int>>& v)
 
 			if(diff >= L && diff <= R)
 			{
-				check = true;
 				q.push(PII(newx, newy));
-				countries.push(PII(newx, newy));
+				countries.emplace_back(newx, newy);
 				visited[newx][newy] = true;
 				total += v[newx][newy];
 			}
 		}
 	}
 
-	int val = total / countries.size();
-
-	while(!countries.empty())
-	{
-		PII cur = countries.front();
-		countries.pop();
-		v[cur.first][cur.second] = val;
-	}
-
-	return check;
+	return total;
 }
 
 int main()
@@ -71,6 +59,7 @@ int main()
 	cin >> N >> L >> R;
 
 	vector<vector<int>> v(N, vector<int>(N, 0));
+	vector<PII> countries;
 
 	for(int i = 0; i < N; i++)
 		for(int j = 0; j < N; j++)
@@ -86,10 +75,24 @@ int main()
 		{
 			for (int j = 0; j < N; j++)
 			{
+				countries.clear();
+
 				if (visited[i][j] == true)
 					continue;
 				visited[i][j] = true;
-				check |= BFS(i, j, v);
+
+				int total = BFS(i, j, v, countries);
+
+				if(countries.size() > 1)
+				{
+					total /= countries.size();
+					check = true;
+
+					for(PII& pii : countries)
+					{
+						v[pii.first][pii.second] = total;
+					}
+				}
 			}
 		}
 
