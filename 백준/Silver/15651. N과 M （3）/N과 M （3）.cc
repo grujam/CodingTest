@@ -1,51 +1,36 @@
 #include <iostream>
-#include <vector>
 
 using namespace std;
 
+int arr[8];
+
 int N, M;
-vector<int> v;
 
-void PrintVector(vector<int>& v)
+void NM(int cnt)
 {
-	for(int a : v)
-	{
-		cout << a << " ";
-	}
-	cout << "\n";
-}
+    if (cnt == M)
+    {
+        for (int i = 1; i < M + 1; i++)
+            cout << arr[i] << " ";
+        cout << '\n';
 
-void dfs(int idx, int cnt)
-{
-	if (++cnt == M)
-	{
-		PrintVector(v);
-		return;
-	}
+        return;
+    }
 
-	for(int i = 1; i < N+1; i++)
-	{
-		v.push_back(i);
-		dfs(i, cnt);
-		v.pop_back();
-	}
+    for (int i = 1; i < N + 1; i++)
+    {
+        arr[cnt + 1] = i;
+        NM(cnt + 1);
+    }
 }
 
 int main()
 {
-	ios_base::sync_with_stdio(0);
-	cin.tie(0);
-	cout.tie(0);
+    ios_base::sync_with_stdio(0); cout.tie(0); cin.tie(0);
 
-	cin >> N >> M;
+    cin >> N >> M;
 
-	for(int i= 1; i < N+1; i++)
-	{
-		v.push_back(i);
-		dfs(i, 0);
-		v.pop_back();
-	}
+    NM(0);
 
-
-	return 0;
+    return 0;
 }
